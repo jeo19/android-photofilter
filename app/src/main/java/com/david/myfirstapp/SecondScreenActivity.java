@@ -1,0 +1,36 @@
+package com.david.myfirstapp;
+import androidx.appcompat.app.AppCompatActivity;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Button;
+import android.util.Log;
+public class SecondScreenActivity extends AppCompatActivity{
+    /*Called when activity is first created*/
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+      setContentView(R.layout.screen2);
+      TextView txtName=(TextView) findViewById(R.id.txtName);
+      TextView txtEmail=(TextView) findViewById(R.id.txtEmail);
+      Button btnClose=(Button) findViewById(R.id.btnClose);
+      Intent i=getIntent();
+      //Receiving data
+      String name=i.getStringExtra("name");
+      String email=i.getStringExtra("email");
+      Log.e("Second Screen",name+"."+email);
+      //Displaying received data
+      txtName.setText(name);
+      txtEmail.setText(email);
+      //Binding Click event to button widget
+      btnClose.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              finish();
+          }
+      });
+
+    }
+}
