@@ -1,4 +1,4 @@
-package com.david.myfirstapp;
+package com.david.myfirstapp.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -7,6 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import android.os.Bundle;
+
+import com.david.myfirstapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
