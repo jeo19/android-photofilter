@@ -21,6 +21,6 @@ public class NavDrawerItem {
         return title;
     }
     public void setTitle(String title){
-        this.title= this.title;
+        this.title= title;
     }
 }
