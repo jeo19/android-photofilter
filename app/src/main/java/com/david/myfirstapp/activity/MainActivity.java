@@ -1,103 +1,75 @@
 package com.david.myfirstapp.activity;
+import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
 import com.david.myfirstapp.R;
-import android.widget.Toast;
-public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
+import java.util.ArrayList;
+import java.util.List;
+import com.david.myfirstapp.activity.OneFragment;
+import com.david.myfirstapp.activity.TwoFragment;
+import com.david.myfirstapp.activity.ThreeFragment;
+public class MainActivity extends AppCompatActivity {
 
-    private static String TAG = MainActivity.class.getSimpleName();
-
-    private Toolbar mToolbar;
-    private FragmentDrawer drawerFragment;
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        drawerFragment = (FragmentDrawer)
-                getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
-        drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
-        drawerFragment.setDrawerListener(this);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
 
-        // display the first navigation drawer view on app launch
-        displayView(0);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new OneFragment(), "ONE");
+        adapter.addFragment(new TwoFragment(), "TWO");
+        adapter.addFragment(new ThreeFragment(), "THREE");
+        viewPager.setAdapter(adapter);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
         }
 
-        if(id == R.id.action_search){
-            Toast.makeText(getApplicationContext(), "Search action is selected!", Toast.LENGTH_SHORT).show();
-            return true;
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
         }
 
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onDrawerItemSelected(View view, int position) {
-        displayView(position);
-    }
-
-    private void displayView(int position) {
-        Fragment fragment = null;
-        String title = getString(R.string.app_name);
-        switch (position) {
-            case 0:
-                fragment = new HomeFragment();
-                title = getString(R.string.title_home);
-                break;
-            case 1:
-                fragment = new FriendsFragment();
-                title = getString(R.string.title_friends);
-                break;
-            case 2:
-                fragment = new MessagesFragment();
-                title = getString(R.string.title_messages);
-                break;
-            default:
-                break;
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
         }
 
-        if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container_body, fragment);
-            fragmentTransaction.commit();
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
 
-            // set the toolbar title
-            getSupportActionBar().setTitle(title);
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
         }
     }
 }
