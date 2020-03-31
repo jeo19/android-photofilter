@@ -10,14 +10,19 @@ import android.os.Bundle;
 import com.david.myfirstapp.R;
 import java.util.ArrayList;
 import java.util.List;
-import com.david.myfirstapp.activity.OneFragment;
-import com.david.myfirstapp.activity.TwoFragment;
-import com.david.myfirstapp.activity.ThreeFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private int[] tabIcons={
+            R.drawable.ic_tab_favourite,
+            R.drawable.ic_tab_call,
+            R.drawable.ic_tab_contacts
+
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,12 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+        setupTabIcons();
+    }
+    private void setupTabIcons(){
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -41,12 +52,6 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFrag(new OneFragment(), "ONE");
         adapter.addFrag(new TwoFragment(), "TWO");
         adapter.addFrag(new ThreeFragment(), "THREE");
-        adapter.addFrag(new FourFragment(), "FOUR");
-        adapter.addFrag(new FiveFragment(), "FIVE");
-        adapter.addFrag(new SixFragment(), "SIX");
-        adapter.addFrag(new SevenFragment(), "SEVEN");
-        adapter.addFrag(new EightFragment(), "EIGHT");
-        adapter.addFrag(new NineFragment(), "NINE");
         viewPager.setAdapter(adapter);
     }
 
