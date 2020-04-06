@@ -34,7 +34,7 @@ public class BitmapUtils {
             final BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
 
-            istr = assetManager.open(fileName);
+            istr = assetManager.open(filename);
 
             // Calculate inSampleSize
             options.inSampleSize = calculateInSampleSize(options, width, height);
